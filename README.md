@@ -1,6 +1,8 @@
 # AI Voice Assistant Headstarter Hackathon
 
 This project is a Flask-based AI voice assistant that utilizes various libraries and APIs to recognize speech commands, perform actions, and provide responses. It incorporates text-to-speech, speech recognition, and various external services to enhance functionality.
+# Demo
+https://www.loom.com/share/e0d017c7e8ba4701bd898e033406b62d?sid=9c9a19f2-a12d-4579-a956-c35d605153f1
 
 ## Features
 
@@ -76,7 +78,7 @@ This project is a Flask-based AI voice assistant that utilizes various libraries
 
    Open your web browser and navigate to `http://127.0.0.1:5000` to interact with the voice assistant.
 
-## Commands
+## Some Commands
 
 - **Greet**: "hi", "hello", "hey"
 - **Goodbye**: "goodbye", "bye"
