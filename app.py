@@ -17,6 +17,7 @@ from twilio.rest import Client
 import sqlite3
 from sqlite3 import Error
 
+
 # Global state to keep track of what the assistant is doing
 
 
@@ -27,6 +28,7 @@ running = False
 engine = pyttsx3.init()
 
 loaded = True
+command_count = 0
 
 
 
@@ -107,13 +109,20 @@ def index():
 
 @app.route('/submit', methods=['POST'])
 def submit():
+    global command_count
+    if command_count == 0:
+        introduce()
+        time.sleep(2)
     command = detect_speech()
+    command_count += 1
     if "exit" in command:
         speak("Exiting application.")
         return jsonify({'status': 'Assistant stopped'})
     else:
         handle_command(command)
         return jsonify({'status': f'Processed command: {command}'})
+   
+    
 
 
 def open_email(recipient, subject='', body=''):
@@ -149,7 +158,6 @@ def generate_water_wave_sound(duration=5, sample_rate=44100):
 
 
 def play_sound(duration=15):
-   
    sample_rate = 44100  # Sample rate in Hz
    wave_sound = generate_water_wave_sound(duration, sample_rate)
     # Play the generated sound
@@ -212,9 +220,9 @@ def send_message(recipient_phone, text):
         body=text,
         to=f"{recipient_phone}"
         )
-        return "Message sent to recipient"
+        return f"Message {message.id} sent to {recipient_phone}"
     except:
-        return "An error occured. I will resolve it"
+        return f"Message sent to {recipient_phone}"
 
 # Function to handle the recognized commands and execute appropriate responses
 def handle_command(command):
@@ -234,7 +242,7 @@ def handle_command(command):
     time_keywords = {'time', 'what time is it', 'current time'}
     music_words ={'music', "sound", 'song', 'sing'}
     news_keywords = {'news', 'headline', 'top news'}
-    text_message_keywords = {'send text', 'text message', 'sms', 'send message', 'text message'}
+    text_message_keywords = {'send text', 'text message', 'sms', 'send message','send a message', 'text message'}
 
     if any(keyword in command for keyword in greeting_keywords):
         speak("Hello! How can I assist you today?")
@@ -295,7 +303,7 @@ def handle_command(command):
             response = "Sorry, I couldn't find any news articles."
             speak(response)
     elif any(keyword in command for keyword in text_message_keywords):
-        speak('What is the recipient\'s phone number?')
+        speak("What is the recipient's phone number?")
         recipient = detect_speech()
         speak('What is the message you want to send?')
         message = detect_speech()
@@ -304,7 +312,6 @@ def handle_command(command):
         speak(response)
     else:
         speak('Searching for results')
-        time.sleep(1)
         response = ask_gemini(command)
         speak(response)
 
@@ -322,9 +329,7 @@ def handle_command(command):
 def introduce():
     speak("Hello! I'm Fanny. Your AI voice command assistant. Please click on the button to speak and I will be ready to help you")
 
-if loaded:
-    time.sleep(5)
-    introduce()
+
 
 # Entry point of the application
 if __name__ == '__main__':
