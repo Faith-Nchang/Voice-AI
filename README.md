@@ -116,5 +116,3 @@ Feel free to submit issues, feature requests, or pull requests. Contributions ar
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
-
-This README provides a comprehensive overview of the AI voice assistant project, including installation instructions, usage details, and troubleshooting tips. Make sure to customize it further based on your specific requirements and project setup.
