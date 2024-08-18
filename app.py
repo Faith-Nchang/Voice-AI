@@ -16,6 +16,8 @@ from gtts import gTTS
 from twilio.rest import Client
 import sqlite3
 from sqlite3 import Error
+import win32com.client
+
 
 
 # Global state to keep track of what the assistant is doing
@@ -67,10 +69,11 @@ def insert_interaction(conn, prompt, response):
 
 
 def speak(message):
-    tts = gTTS(text=message, lang='en')
-    tts.save("output.mp3")
-    os.system("start output.mp3")
+    
+    speaker = win32com.client.Dispatch("SAPI.SpVoice")
+    speaker.Speak(message)
 
+    
    
 def detect_speech():
     """
@@ -94,12 +97,12 @@ def detect_speech():
             # Speak the error message if speech is not understood
             error_message = "Sorry, I did not understand that. Please try again"
             speak(error_message)
-            return error_message
+            return ""
         except sr.RequestError:
             # Speak the error message if there is a connection issue
             error_message = "Sorry, I'm having trouble connecting to the service. Please try again"
             speak(error_message)
-            return error_message
+            return ""
                 
 
 @app.route('/')
@@ -310,6 +313,8 @@ def handle_command(command):
         speak('Sending text message...')
         response = send_message(recipient, message)
         speak(response)
+    elif command == "":
+        speak("How can i assist you. Click on the button to speak")
     else:
         speak('Searching for results')
         response = ask_gemini(command)
