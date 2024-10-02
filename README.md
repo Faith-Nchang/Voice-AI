@@ -14,6 +14,7 @@ https://www.loom.com/share/e0d017c7e8ba4701bd898e033406b62d?sid=9c9a19f2-a12d-45
 - **News Headlines**: Retrieves and reads out the latest news headlines.
 - **Text Messaging**: Sends SMS messages using Twilio's API.
 - **Sound Playback**: Plays a custom sound that simulates water waves.
+- **Smart answering**: Gemini API incorporation for other questions (NLP)
 
 ## Installation
 
